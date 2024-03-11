@@ -14,6 +14,7 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  console.log(formData);
 
   useEffect(() => {
     if (file) {
@@ -44,6 +45,11 @@ export default function Profile() {
       }
     );
   };
+
+  const handlerChange = (event) => {
+    setFormData({ ...formData, [event.target.id]: event.target.value });
+  };
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -80,6 +86,7 @@ export default function Profile() {
           id='username'
           className='border p-3 rounded-lg'
           defaultValue={currentUser.username}
+          onChange={handlerChange}
         />
         <input
           type='email'
@@ -87,6 +94,7 @@ export default function Profile() {
           id='email'
           className='border p-3 rounded-lg'
           defaultValue={currentUser.email}
+          onChange={handlerChange}
         />
         <input
           type='text'

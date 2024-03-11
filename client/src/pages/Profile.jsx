@@ -6,7 +6,15 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 import { app } from '../firebase';
+
+
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
@@ -14,7 +22,9 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
-  console.log(formData);
+  // const [updateSuccess, setUpdateSuccess] = useState(false);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     if (file) {
@@ -50,10 +60,33 @@ export default function Profile() {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
 
+  const handlerSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      // setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form className='flex flex-col gap-4'>
+      <form onSubmit={handlerSubmit} className='flex flex-col gap-4'>
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type='file'
@@ -97,7 +130,7 @@ export default function Profile() {
           onChange={handlerChange}
         />
         <input
-          type='text'
+          type='password'
           placeholder='password'
           id='password'
           className='border p-3 rounded-lg'

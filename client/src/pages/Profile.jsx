@@ -79,12 +79,14 @@ export default function Profile() {
           placeholder='username'
           id='username'
           className='border p-3 rounded-lg'
+          defaultValue={currentUser.username}
         />
         <input
           type='email'
           placeholder='email'
           id='email'
           className='border p-3 rounded-lg'
+          defaultValue={currentUser.email}
         />
         <input
           type='text'

@@ -15,8 +15,6 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   signOutUserStart,
-  signOutUserSuccess,
-  signOutUserFailure
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { app } from "../firebase";

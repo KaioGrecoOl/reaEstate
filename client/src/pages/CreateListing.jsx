@@ -34,6 +34,7 @@ export default function CreateListing() {
   console.log(formData);
 
   const handleImageSubmit = (e) => {
+    e.preventDefault();
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
@@ -52,6 +53,7 @@ export default function CreateListing() {
           setUploading(false);
         })
         .catch((error) => {
+          console.log(error)
           setImageUploadError("Image upload failed (2 mb max per image");
           setUploading(false);
         });

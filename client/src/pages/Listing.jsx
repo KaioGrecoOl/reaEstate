@@ -73,8 +73,10 @@ export default function Listing() {
             </p>
           )}
           <div className="">
-            <p>{listing.name} - ${" "} {
-              listing.offer ? listing.discountPrice : listing.regularPrice
+            <p> {listing.name} - ${' '}
+              {listing.offer
+                ? listing.discountPrice.toLocaleString('en-US')
+                : listing.regularPrice.toLocaleString('en-US')
             }</p>
           </div>
         </div>

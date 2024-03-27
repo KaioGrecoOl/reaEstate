@@ -72,6 +72,11 @@ export default function Listing() {
               Link copied
             </p>
           )}
+          <div className="">
+            <p>{listing.name} - ${" "} {
+              listing.offer ? listing.discountPrice : listing.regularPrice
+            }</p>
+          </div>
         </div>
       )}
     </main>
